@@ -26,7 +26,7 @@ namespace BancaDelTempo
         private void Form1_Load(object sender, EventArgs e)
         {
             LoadData();
-            Update();
+            Aggiorna();
         }
 
         private void LoadData()
@@ -45,7 +45,7 @@ namespace BancaDelTempo
             }
         }
 
-        private void Update()
+        private void Aggiorna()
         {
             // Aggiornare la visualizzazione dei dati nell'interfaccia grafica
             lstSoci.Items.Clear();
@@ -57,7 +57,14 @@ namespace BancaDelTempo
 
         private void btnDebito_Click(object sender, EventArgs e)
         {
+            // Logica per produrre l'elenco dei soci con debito
+            List<Socio> debitori = soci.Where(s => s.CalcolaDebito() > 0).ToList();
 
+            lstDebito.Items.Clear();
+            foreach (Socio debitor in debitori)
+            {
+                lstDebito.Items.Add($"{debitor.Cognome}, {debitor.Nome} | Debito: {debitor.Debito}");
+            }
         }
 
         private void btnSegreteria_Click(object sender, EventArgs e)
