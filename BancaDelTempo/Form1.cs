@@ -69,7 +69,14 @@ namespace BancaDelTempo
 
         private void btnSegreteria_Click(object sender, EventArgs e)
         {
+            // Logica per visualizzare i soci della segreteria
+            List<Socio> segreteriaSoci = soci.Where(s => s.Segreteria).ToList();
 
+            lstSegreteria.Items.Clear();
+            foreach (Socio segreteriaSocio in segreteriaSoci)
+            {
+                lstSegreteria.Items.Add($"{segreteriaSocio.Cognome}, {segreteriaSocio.Nome} - Tel: {segreteriaSocio.Telefono}");
+            }
         }
 
         private void btnOrdinaPrestazioni_Click(object sender, EventArgs e)
