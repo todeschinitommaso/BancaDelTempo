@@ -93,7 +93,8 @@ namespace BancaDelTempo
 
         private void btnReload_Click(object sender, EventArgs e)
         {
-
+            LoadData();
+            Aggiorna();
         }
     }
 }
