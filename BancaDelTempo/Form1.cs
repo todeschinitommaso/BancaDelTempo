@@ -81,7 +81,14 @@ namespace BancaDelTempo
 
         private void btnOrdinaPrestazioni_Click(object sender, EventArgs e)
         {
+            // Logica per ordinare e visualizzare le prestazioni
+            List<Prestazione> prestazioniOrdinate = prestazioni.OrderByDescending(p => p.Ore).ToList();
 
+            lstPrestazioni.Items.Clear();
+            foreach (Prestazione prestazione in prestazioniOrdinate)
+            {
+                lstPrestazioni.Items.Add($"{prestazione.Erogatore.Cognome}, {prestazione.Erogatore.Nome} -> {prestazione.Ricevente.Cognome}, {prestazione.Ricevente.Nome} - {prestazione.Ore} ore di {prestazione.Tipo}");
+            }
         }
 
         private void btnReload_Click(object sender, EventArgs e)
