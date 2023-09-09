@@ -29,9 +29,8 @@ namespace BancaDelTempo
             Aggiorna();
         }
 
-        private void LoadData()
+        private void LoadData() //IMPORTAZIONE DATI DAL JSON
         {
-            // Caricare dati da file JSON
             if (File.Exists("soci.json"))
             {
                 string sociJson = File.ReadAllText("soci.json");
@@ -47,7 +46,6 @@ namespace BancaDelTempo
 
         private void Aggiorna()
         {
-            // Aggiornare la visualizzazione dei dati nell'interfaccia grafica
             lstSoci.Items.Clear();
             foreach (Socio socio in soci)
             {
@@ -55,9 +53,8 @@ namespace BancaDelTempo
             }
         }
 
-        private void btnDebito_Click(object sender, EventArgs e)
+        private void btnDebito_Click(object sender, EventArgs e) //SOCI CON DEBITO
         {
-            // Logica per produrre l'elenco dei soci con debito
             List<Socio> debitori = soci.Where(s => s.CalcolaDebito() > 0).ToList();
 
             lstDebito.Items.Clear();
@@ -67,9 +64,8 @@ namespace BancaDelTempo
             }
         }
 
-        private void btnSegreteria_Click(object sender, EventArgs e)
+        private void btnSegreteria_Click(object sender, EventArgs e) //SOCI APPARTENENTI ALLA SEGRETERIA
         {
-            // Logica per visualizzare i soci della segreteria
             List<Socio> segreteriaSoci = soci.Where(s => s.Segreteria).ToList();
 
             lstSegreteria.Items.Clear();
@@ -79,9 +75,8 @@ namespace BancaDelTempo
             }
         }
 
-        private void btnOrdinaPrestazioni_Click(object sender, EventArgs e)
+        private void btnOrdinaPrestazioni_Click(object sender, EventArgs e) //VISUALIZZAZIONE PRESTAZIONI
         {
-            // Logica per ordinare e visualizzare le prestazioni
             List<Prestazione> prestazioniOrdinate = prestazioni.OrderByDescending(p => p.Ore).ToList();
 
             lstPrestazioni.Items.Clear();

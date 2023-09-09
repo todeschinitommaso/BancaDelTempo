@@ -93,15 +93,15 @@
             this.lstPrestazioni.FormattingEnabled = true;
             this.lstPrestazioni.Location = new System.Drawing.Point(12, 64);
             this.lstPrestazioni.Name = "lstPrestazioni";
-            this.lstPrestazioni.Size = new System.Drawing.Size(194, 381);
+            this.lstPrestazioni.Size = new System.Drawing.Size(394, 186);
             this.lstPrestazioni.TabIndex = 17;
             // 
             // lstDebito
             // 
             this.lstDebito.FormattingEnabled = true;
-            this.lstDebito.Location = new System.Drawing.Point(212, 64);
+            this.lstDebito.Location = new System.Drawing.Point(12, 259);
             this.lstDebito.Name = "lstDebito";
-            this.lstDebito.Size = new System.Drawing.Size(194, 381);
+            this.lstDebito.Size = new System.Drawing.Size(394, 186);
             this.lstDebito.TabIndex = 18;
             // 
             // lstSegreteria
@@ -124,7 +124,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(825, 458);
+            this.ClientSize = new System.Drawing.Size(822, 458);
             this.Controls.Add(this.lstSoci);
             this.Controls.Add(this.lstSegreteria);
             this.Controls.Add(this.lstDebito);

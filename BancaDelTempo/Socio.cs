@@ -14,8 +14,9 @@ namespace BancaDelTempo
         public string _nome;
         public double _telefono;
         public int _debito;
-        public bool _segreteria; // Indica se il socio fa parte della segreteria
+        public bool _segreteria;
 
+        [JsonProperty]
         public string Cognome
         {
             get
@@ -27,10 +28,11 @@ namespace BancaDelTempo
                 if (!String.IsNullOrWhiteSpace(value))
                     _cognome = value;
                 else
-                    throw new Exception("Cognome non valido");
+                    throw new Exception("Inserisci un cognome non valido");
             }
         }
 
+        [JsonProperty]
         public string Nome
         {
             get
@@ -42,10 +44,11 @@ namespace BancaDelTempo
                 if (!String.IsNullOrWhiteSpace(value))
                     _nome = value;
                 else
-                    throw new Exception("Nome non valido");
+                    throw new Exception("Inserisci un nome non valido");
             }
         }
 
+        [JsonProperty]
         public double Telefono
         {
             get
@@ -57,10 +60,11 @@ namespace BancaDelTempo
                 if (!String.IsNullOrWhiteSpace(value.ToString()) && value.ToString().Length == 10)
                     _telefono = value;
                 else
-                    throw new Exception("Numero di Telefono non valido");
+                    throw new Exception("Inserisci un numero di telefono non valido");
             }
         }
 
+        [JsonProperty]
         public int Debito
         {
             get
@@ -73,6 +77,7 @@ namespace BancaDelTempo
             }
         }
 
+        [JsonProperty]
         public bool Segreteria
         {
             get
@@ -88,6 +93,7 @@ namespace BancaDelTempo
             }
         }
 
+        [JsonProperty]
         public List<Prestazione> Prestazioni { get; set; } // Elenco delle prestazioni offerte o ricevute dal socio
 
         public Socio(string cognome, string nome, double telefono, int debito, bool segreteria)
@@ -110,31 +116,29 @@ namespace BancaDelTempo
             Prestazioni = new List<Prestazione>();
         }
 
-        // AGGIUNGERE PRESTAZIONE
         public void AggiungiPrestazione(Prestazione prestazione)
         {
             Prestazioni.Add(prestazione);
         }
 
-        // CALCOLO SALDO
         public int CalcolaDebito()
         {
-            int oreErogate = 0;
-            int oreRicevute = 0;
+            int hsvolte = 0;
+            int hricevute = 0;
 
             foreach (Prestazione prestazione in Prestazioni)
             {
                 if (prestazione.Erogatore.Equals(this))
                 {
-                    oreErogate += prestazione.Ore;
+                    hsvolte += prestazione.Ore;
                 }
                 else if (prestazione.Ricevente.Equals(this))
                 {
-                    oreRicevute += prestazione.Ore;
+                    hricevute += prestazione.Ore;
                 }
             }
 
-            this.Debito = oreRicevute - oreErogate;
+            this.Debito = hricevute - hsvolte;
             return this.Debito;
         }
 

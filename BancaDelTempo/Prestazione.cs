@@ -13,12 +13,13 @@ namespace BancaDelTempo
     public class Prestazione : IEquatable<Prestazione>
     {
         public string _id;
-        public Socio _erogatore; // Il socio che eroga la prestazione
-        public Socio _ricevente; // Il socio che riceve la prestazione
-        public int _ore;    // Numero di ore impiegate per la prestazione
-        public DateTime _data; // Data in cui è stata effettuata la prestazione
-        public string _tipo; // Tipologia di prestazione
+        public Socio _erogatore; 
+        public Socio _ricevente;
+        public int _ore;
+        public DateTime _data;
+        public string _tipo; 
 
+        [JsonProperty]
         public string Id
         {
             get
@@ -33,6 +34,8 @@ namespace BancaDelTempo
                     throw new Exception("Id non valido");
             }
         }
+
+        [JsonProperty]
         public Socio Erogatore
         {
             get
@@ -47,6 +50,8 @@ namespace BancaDelTempo
                     throw new Exception("Erogatore non valido");
             }
         }
+
+        [JsonProperty]
         public Socio Ricevente
         {
             get
@@ -61,6 +66,8 @@ namespace BancaDelTempo
                     throw new Exception("Ricevente non valido");
             }
         }
+
+        [JsonProperty]
         public int Ore
         {
             get
@@ -69,12 +76,14 @@ namespace BancaDelTempo
             }
             private set
             {
-                if (value > 0)//Prestazioni da min 1h
+                if (value > 0)
                     _ore = value;
                 else
                     throw new Exception("Ore non valide");
             }
         }
+
+        [JsonProperty]
         public DateTime Data
         {
             get
@@ -89,6 +98,8 @@ namespace BancaDelTempo
                     throw new Exception("Data non valida");
             }
         }
+
+        [JsonProperty]
         public string Tipo
         {
             get
