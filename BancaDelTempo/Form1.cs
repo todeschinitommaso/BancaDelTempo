@@ -94,40 +94,40 @@ namespace BancaDelTempo
 
         private void btnAggiungi_Click(object sender, EventArgs e) //AGGIUNGI SOCIO
         {
-            bool done = true;
-            double newphone;
+            bool stato = true;
+            double newtel;
             if (String.IsNullOrWhiteSpace(textBox1.Text))
             {
-                done = false;
-                MessageBox.Show("Cognome non valido");
+                stato = false;
+                MessageBox.Show("impossibile inserire cognome");
             }
             if (String.IsNullOrWhiteSpace(textBox2.Text))
             {
-                done = false;
-                MessageBox.Show("Nome non valido");
+                stato = false;
+                MessageBox.Show("impossibile inserire nome");
             }
             if (String.IsNullOrWhiteSpace(textBox3.Text) || textBox3.Text.Length != 10)
             {
                 try
                 {
-                    newphone = double.Parse(textBox3.Text);
+                    newtel = double.Parse(textBox3.Text);
                 }
                 catch
                 {
-                    done = false;
-                    MessageBox.Show("Telefono non valido");
+                    stato = false;
+                    MessageBox.Show("impossibile inserire telefono");
                 }
             }
             if (comboBox1.Text == string.Empty)
             {
-                done = false;
-                MessageBox.Show("Zona non valida");
+                stato = false;
+                MessageBox.Show("impossibile inserire paese");
             }
-            if (done)
+            if (stato)
             {
-                Socio nuovo = new Socio(textBox1.Text, textBox2.Text, double.Parse(textBox3.Text), comboBox1.Text, 0, false);
-                AggiungiSocio(nuovo);
-                MessageBox.Show("Aggiunta eseguita con SUCCESSO");
+                Socio s = new Socio(textBox1.Text, textBox2.Text, double.Parse(textBox3.Text), comboBox1.Text, 0, false);
+                AggiungiSocio(s);
+                MessageBox.Show("Socio aggiunto correttamente");
             }
         }
 
