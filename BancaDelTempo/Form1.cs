@@ -26,7 +26,7 @@ namespace BancaDelTempo
         private void Form1_Load(object sender, EventArgs e)
         {
             LoadData();
-            Aggiorna();
+            
         }
 
         private void LoadData() //IMPORTAZIONE DATI DAL JSON
@@ -42,25 +42,16 @@ namespace BancaDelTempo
                 string prestazioniJson = File.ReadAllText("prestazioni.json");
                 prestazioni = JsonConvert.DeserializeObject<List<Prestazione>>(prestazioniJson);
             }
-        }
-
-        private void Aggiorna()
-        {
-            lstSoci.Items.Clear();
-            foreach (Socio socio in soci)
-            {
-                lstSoci.Items.Add($"{socio.Cognome}, {socio.Nome} - Tel: {socio.Telefono}");
-            }
-        }
+        } 
 
         private void btnDebito_Click(object sender, EventArgs e) //SOCI CON DEBITO
         {
             List<Socio> debitori = soci.Where(s => s.CalcolaDebito() > 0).ToList();
 
-            lstDebito.Items.Clear();
+            list.Items.Clear();
             foreach (Socio debitor in debitori)
             {
-                lstDebito.Items.Add($"{debitor.Cognome}, {debitor.Nome} | Debito: {debitor.Debito}");
+                list.Items.Add($"{debitor.Cognome}, {debitor.Nome} | Debito: {debitor.Debito}");
             }
         }
 
@@ -68,10 +59,10 @@ namespace BancaDelTempo
         {
             List<Socio> segreteriaSoci = soci.Where(s => s.Segreteria).ToList();
 
-            lstSegreteria.Items.Clear();
+            list.Items.Clear();
             foreach (Socio segreteriaSocio in segreteriaSoci)
             {
-                lstSegreteria.Items.Add($"{segreteriaSocio.Cognome}, {segreteriaSocio.Nome} - Tel: {segreteriaSocio.Telefono}");
+                list.Items.Add($"{segreteriaSocio.Cognome}, {segreteriaSocio.Nome} - Tel: {segreteriaSocio.Telefono}");
             }
         }
 
@@ -79,17 +70,101 @@ namespace BancaDelTempo
         {
             List<Prestazione> prestazioniOrdinate = prestazioni.OrderByDescending(p => p.Ore).ToList();
 
-            lstPrestazioni.Items.Clear();
+            list.Items.Clear();
             foreach (Prestazione prestazione in prestazioniOrdinate)
             {
-                lstPrestazioni.Items.Add($"{prestazione.Erogatore.Cognome}, {prestazione.Erogatore.Nome} -> {prestazione.Ricevente.Cognome}, {prestazione.Ricevente.Nome} - {prestazione.Ore} ore di {prestazione.Tipo}");
+                list.Items.Add($"{prestazione.Erogatore.Cognome}, {prestazione.Erogatore.Nome} -> {prestazione.Ricevente.Cognome}, {prestazione.Ricevente.Nome} - {prestazione.Ore} ore di {prestazione.Tipo}");
             }
         }
 
-        private void btnReload_Click(object sender, EventArgs e)
+        private void btnSoci_Click(object sender, EventArgs e) //STAMPA TUTTI I SOCI
         {
+            list.Items.Clear();
+            foreach (Socio socio in soci)
+            {
+                list.Items.Add($"{socio.Cognome}, {socio.Nome} - Tel: {socio.Telefono}");
+            }
+        }
+
+        private void btnAggiorna_Click(object sender, EventArgs e)
+        {
+            list.Items.Clear();
             LoadData();
-            Aggiorna();
+        }
+
+        private void btnAggiungi_Click(object sender, EventArgs e) //AGGIUNGI SOCIO
+        {
+            bool done = true;
+            double newphone;
+            if (String.IsNullOrWhiteSpace(textBox1.Text))
+            {
+                done = false;
+                MessageBox.Show("Cognome non valido");
+            }
+            if (String.IsNullOrWhiteSpace(textBox2.Text))
+            {
+                done = false;
+                MessageBox.Show("Nome non valido");
+            }
+            if (String.IsNullOrWhiteSpace(textBox3.Text) || textBox3.Text.Length != 10)
+            {
+                try
+                {
+                    newphone = double.Parse(textBox3.Text);
+                }
+                catch
+                {
+                    done = false;
+                    MessageBox.Show("Telefono non valido");
+                }
+            }
+            if (comboBox1.Text == string.Empty)
+            {
+                done = false;
+                MessageBox.Show("Zona non valida");
+            }
+            if (done)
+            {
+                Socio nuovo = new Socio(textBox1.Text, textBox2.Text, double.Parse(textBox3.Text), comboBox1.Text, 0, false);
+                AggiungiSocio(nuovo);
+                MessageBox.Show("Aggiunta eseguita con SUCCESSO");
+            }
+        }
+
+        public static void AggiungiSocio(Socio nuovo)
+        {
+            var N = new FileStream(@"soci.json", FileMode.OpenOrCreate, FileAccess.ReadWrite);
+            N.Close();
+            StreamReader sr = new StreamReader(@"soci.json");
+            StreamWriter sw = new StreamWriter(@"./soci2.json");
+
+            string line = "";
+            int i = 0;
+
+            while (!sr.EndOfStream || i != 1)
+            {
+                line = sr.ReadLine();
+
+                if (line != null && i == 0 && line != "]")
+                {
+                    sw.WriteLine(line);
+                }
+                else if (line == "]")
+                {
+                    sw.WriteLine(",");
+                    //aggiunta classe jsonata
+                    string jsonString = JsonConvert.SerializeObject(nuovo, Formatting.None);
+                    sw.WriteLine(jsonString);
+                    sw.WriteLine("]");
+                    i = 1;
+                }
+            }
+            sr.Close();
+            sw.Close();
+
+            System.IO.File.Delete(@"soci.json");
+            System.IO.File.Move(@"./soci2.json", @"soci.json");
+
         }
     }
 }

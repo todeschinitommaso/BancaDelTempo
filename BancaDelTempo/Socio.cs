@@ -3,6 +3,7 @@ using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Policy;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -13,6 +14,7 @@ namespace BancaDelTempo
         public string _cognome;
         public string _nome;
         public double _telefono;
+        public string _paese;
         public int _debito;
         public bool _segreteria;
 
@@ -65,6 +67,22 @@ namespace BancaDelTempo
         }
 
         [JsonProperty]
+        public string Paese
+        {
+            get
+            {
+                return _paese;
+            }
+            private set
+            {
+                if (!String.IsNullOrWhiteSpace(value))
+                    _paese = value;
+                else
+                    throw new Exception("Paese non valido");
+            }
+        }
+
+        [JsonProperty]
         public int Debito
         {
             get
@@ -96,11 +114,12 @@ namespace BancaDelTempo
         [JsonProperty]
         public List<Prestazione> Prestazioni { get; set; } // Elenco delle prestazioni offerte o ricevute dal socio
 
-        public Socio(string cognome, string nome, double telefono, int debito, bool segreteria)
+        public Socio(string cognome, string nome, double telefono, string paese, int debito, bool segreteria)
         {
             Cognome = cognome;
             Nome = nome;
             Telefono = telefono;
+            Paese = paese;
             Debito = debito;
             Segreteria = segreteria;
             Prestazioni = new List<Prestazione>();
@@ -111,6 +130,7 @@ namespace BancaDelTempo
             Cognome = "NoData";
             Nome = "NoData";
             Telefono = 1000000000;
+            _paese = "NoData";
             Debito = 0;
             Segreteria = false;
             Prestazioni = new List<Prestazione>();
@@ -142,7 +162,7 @@ namespace BancaDelTempo
             return this.Debito;
         }
 
-        protected Socio(Socio other) : this(other.Cognome, other.Nome, other.Telefono, other.Debito, other.Segreteria)
+        protected Socio(Socio other) : this(other.Cognome, other.Nome, other.Telefono, other.Paese, other.Debito, other.Segreteria)
         {
 
         }
@@ -163,7 +183,7 @@ namespace BancaDelTempo
 
         public override string ToString()
         {
-            return $"Socio: {Cognome} {Nome}; {Telefono}, {Debito}";
+            return $"Socio: {Cognome} {Nome}; {Telefono}, {Paese}, {Debito}";
         }
     }
 }
